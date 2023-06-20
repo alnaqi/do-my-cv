@@ -19,4 +19,4 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
 ### Demo App:
-[Task App](https://do-my-cv.web.app/)
+[do-my-cv App](https://do-my-cv.web.app/)
