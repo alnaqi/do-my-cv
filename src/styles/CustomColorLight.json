@@ -1,0 +1,13 @@
+{
+  "background": {
+    "default": "FAFAFA"
+  },
+  "myColor": {
+    "main": "#64748b",
+    "dark": "#4c586a",
+    "contrastText": "#fff"
+  },
+  "grayColor": {
+    "main": "#e0e0e0"
+  }
+}
