@@ -1,0 +1,98 @@
+.Classic-header {
+  padding: 8mm 16mm;
+  text-align: center;
+  color: black;
+}
+
+.Classic-header h1 {
+  font-size: 11mm;
+  font-weight: 500;
+  border-bottom: 2px solid black;
+}
+
+.Classic-sub-header {
+  margin-top: 6mm;
+}
+
+.Classic-sub-header p {
+  margin-right: 3mm;
+  font-size: 3.5mm;
+  font-weight: 300;
+}
+
+.Classic-sub-header p:nth-child(-n+2) {
+  display: inline-block;
+}
+
+.Classic-sub-header p span {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+
+.Classic-container {
+  width: 85%;
+  margin: 10px auto;
+  color: black;
+}
+
+.Classic-main {
+  display: inline-grid;
+  grid-template-columns: 1fr 3fr;
+  column-gap: 10mm;
+}
+
+.Classic-main div {
+  padding: 30px 10px;
+}
+
+
+.Classic-main div>h2 {
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.Classic-body {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+ul.dashed {
+  padding-left: 1em;
+}
+
+ul.dashed li {
+  padding-inline-start: 1em;
+}
+
+ul.dashed li:last-child {
+  margin-bottom: 0;
+}
+
+.li-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.date-no-break {
+  white-space: nowrap;
+}
+
+.Classic-detailes {
+  display: block;
+  color: rgba(0, 0, 0, 0.604);
+  font-weight: 300;
+}

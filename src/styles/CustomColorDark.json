@@ -1,0 +1,10 @@
+{
+  "myColor": {
+    "main": "#009688",
+    "dark": "#00796b",
+    "contrastText": "#fff"
+  },
+  "grayColor": {
+    "main": "#424242"
+  }
+}
