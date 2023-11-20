@@ -26,6 +26,8 @@ export default Results;
 
 function CustomImageList() {
 
+  
+
   return (
     <>
       <Box component="span" sx={{ position: "absolute", left: "-1000px",  }}>
@@ -35,7 +37,7 @@ function CustomImageList() {
       <ImageList
         sx={{
           width: 350,
-          height: 450,
+          Height: 450,
           transform: "translateZ(0)",
         }}
         rowHeight={200}

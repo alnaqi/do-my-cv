@@ -18,6 +18,11 @@ import {
 } from "react-router-dom";
 import Registration from "pages/Auths/Registration";
 
+// Test
+import Test from "pages/Test/Test";
+import Do_It from "pages/Test/Do_It";
+import Profile from "pages/Profile/Profile";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
@@ -26,11 +31,17 @@ const router = createBrowserRouter(
         <Route path="create" element={<Resume />} />
         <Route path="contact" element={<Contact />} />
         <Route path="registration" element={<Registration />} />
+        <Route path="profile" element={<Profile />} />
       </Route>
       <Route path="templates" element={<Templates />}>
         <Route path="the_open_sea" element={<TheOpenSeaPage />} />
         <Route path="classic" element={<ClassicPage />} />
       </Route>
+
+      <Route path="test" element={<Test />}>
+        <Route path="do-it" element={<Do_It />} />
+      </Route>
+
       <Route path="*" element={<NotFound />} />
     </Route>
   )

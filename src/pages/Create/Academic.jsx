@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 
-export default function Academic({academicDegree ,setAcademicDegree ,collage ,setCollage ,specialist ,setSpecialist ,degreeNo ,setDegreeNo ,degreeNoSelect ,setDegreeNoSelect ,educationDate ,setEducationDate ,experLists ,setExperLists}) {
+export default function Academic({inputLoading, academicDegree ,setAcademicDegree ,collage ,setCollage ,specialist ,setSpecialist ,degreeNo ,setDegreeNo ,degreeNoSelect ,setDegreeNoSelect ,educationDate ,setEducationDate ,experLists ,setExperLists}) {
   
 
   // handle input change
@@ -67,6 +67,7 @@ export default function Academic({academicDegree ,setAcademicDegree ,collage ,se
                     fullWidth
                     value={academicDegree}
                     onChange={e => setAcademicDegree(e.target.value)}
+                    disabled={inputLoading}
                     autoWidth
                     label="AcademicDegree"
                   >
@@ -89,6 +90,7 @@ export default function Academic({academicDegree ,setAcademicDegree ,collage ,se
                   fullWidth
                   value={collage}
                   onChange={e => setCollage(e.target.value)}
+                  disabled={inputLoading}
                   autoComplete="no"
                   variant="standard"
                 />
@@ -103,6 +105,7 @@ export default function Academic({academicDegree ,setAcademicDegree ,collage ,se
                   fullWidth
                   value={specialist}
                   onChange={e => setSpecialist(e.target.value)}
+                  disabled={inputLoading}
                   autoComplete="no"
                   variant="standard"
                 />
@@ -120,6 +123,7 @@ export default function Academic({academicDegree ,setAcademicDegree ,collage ,se
                     variant="outlined"
                     value={educationDate}
                     onChange={(e) => setEducationDate(e.target.value)}
+                    disabled={inputLoading}
                   />
                 </FormControl>
               </Grid>
@@ -134,6 +138,7 @@ export default function Academic({academicDegree ,setAcademicDegree ,collage ,se
                     fullWidth
                     value={degreeNoSelect}
                     onChange={e => setDegreeNoSelect(e.target.value)}
+                    disabled={inputLoading}
                     autoWidth
                     label="DegreeType"
                   >
@@ -149,7 +154,7 @@ export default function Academic({academicDegree ,setAcademicDegree ,collage ,se
               <Grid item xs={6} md={6}>
                 <TextField
                   required
-                  disabled={degreeNoSelect === "" ? true : false}
+                  disabled={(degreeNoSelect === "" ? true : false) || inputLoading}
                   id="degree"
                   name="degree"
                   label="Degree"
@@ -197,6 +202,7 @@ export default function Academic({academicDegree ,setAcademicDegree ,collage ,se
                               variant="standard"
                               value={x.titleExper}
                               onChange={(e) => handleInputChange(e, i)}
+                              disabled={inputLoading}
                             />
                           </Grid>
 
@@ -212,6 +218,7 @@ export default function Academic({academicDegree ,setAcademicDegree ,collage ,se
                               variant="standard"
                               value={x.company}
                               onChange={(e) => handleInputChange(e, i)}
+                              disabled={inputLoading}
                             />
                           </Grid>
                           <Grid item xs={12} md={12}>
@@ -222,6 +229,7 @@ export default function Academic({academicDegree ,setAcademicDegree ,collage ,se
                               name="descExper"
                               value={x.descExper}
                               onChange={(e) => handleInputChange(e, i)}
+                              disabled={inputLoading}
                               label="Description"
                               multiline
                               maxRows={4}
@@ -240,6 +248,7 @@ export default function Academic({academicDegree ,setAcademicDegree ,collage ,se
                                 variant="outlined"
                                 value={x.startDate}
                                 onChange={(e) => handleInputChange(e, i)}
+                                disabled={inputLoading}
                               />
                             </FormControl>
                           </Grid>
@@ -253,11 +262,12 @@ export default function Academic({academicDegree ,setAcademicDegree ,collage ,se
                                     name="checkedEndDate"
                                     checked={x.checkedEndDate}
                                     onChange={e => handleInputChange(e, i)}
+                                    disabled={inputLoading}
                                   />}
                                   label={x.checkedEndDate ? "Current" : ""}
                                 />
                                 <TextField
-                                  disabled={x.checkedEndDate}
+                                  disabled={x.checkedEndDate || inputLoading}
                                   required
                                   id={`endDate${i}`}
                                   name="endDate"

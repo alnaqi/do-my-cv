@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { addDoc, collection, doc, setDoc, } from "firebase/firestore"
+import { doc, setDoc, } from "firebase/firestore"
 
 function GatheringData({
     user, db,
@@ -14,20 +14,14 @@ function GatheringData({
         skillLists, courseLists
     };
 
-    const userId = user ? `${user.uid}` : "anonymous"
-    const gather2 = async () => {
+    const sendData = async () => {
+        const userId = user ? `${user.uid}` : "anonymous"
         const numId = new Date().getTime();
-        const userRef = doc(db, "Users", userId);
-        await setDoc(userRef, {
-            Name: user.displayName,
-            Email: user.email,
-            CreateDate: new Date(user.metadata.creationTime)
-        })
-        const collectionUser = collection(userRef, `${numId}`)
-        await addDoc(collectionUser, {numId, ...docData})
+        const userRef = doc(db, `Users/${userId}/Resume info/${numId}`);
+        await setDoc(userRef, {numId, ...docData})
     }
     useEffect(() => {
-        gather2()
+        sendData()
     }, [
         firstName, lastName, email, phone, aboutMe, urlLists,
         academicDegree, collage, specialist, degreeNo, degreeNoSelect, educationDate, experLists,

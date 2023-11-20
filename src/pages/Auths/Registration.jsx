@@ -2,9 +2,9 @@ import { useState } from "react";
 import "./AuthStyles.css";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
-import { Container, Paper, Typography, useMediaQuery } from "@mui/material";
+import { Container, Paper, useMediaQuery } from "@mui/material";
 
-import { auth } from "../../firebase/config"
+import { db, auth } from "../../firebase/config"
 import { useAuthState } from "react-firebase-hooks/auth"
 
 export default function Registration() {
@@ -29,12 +29,12 @@ export default function Registration() {
           mobile ?
             <>
               {type === "signUp" && <SignUpForm {...{ mobile, handleOnClick, auth, useAuthState, type }} />}
-              {type === "signIn" && <SignInForm {...{ mobile, handleOnClick, auth, useAuthState, type }} />}
+              {type === "signIn" && <SignInForm {...{ mobile, handleOnClick, auth, db, useAuthState, type }} />}
             </>
             :
             <>
               <SignUpForm {...{ mobile, handleOnClick, auth, useAuthState, type }} />
-              <SignInForm {...{ mobile, handleOnClick, auth, useAuthState, type }} />
+              <SignInForm {...{ mobile, handleOnClick, auth, db, useAuthState, type }} />
               <div className="overlay-container">
                 <div className="overlay">
                   <div className="overlay-panel overlay-left">

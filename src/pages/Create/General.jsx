@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 
-export default function General({skillLists, setSkillLists, courseLists, setCourseLists}) {
+export default function General({ inputLoading, skillLists, setSkillLists, courseLists, setCourseLists }) {
 
   // handle input change
   const handleCourseChange = (e, index) => {
@@ -89,6 +89,7 @@ export default function General({skillLists, setSkillLists, courseLists, setCour
                               variant="standard"
                               value={x.titleCourse}
                               onChange={(e) => handleCourseChange(e, i)}
+                              disabled={inputLoading}
                             />
                           </Grid>
 
@@ -105,6 +106,7 @@ export default function General({skillLists, setSkillLists, courseLists, setCour
                                 variant="outlined"
                                 value={x.courseDate}
                                 onChange={(e) => handleCourseChange(e, i)}
+                                disabled={inputLoading}
                               />
                             </FormControl>
                           </Grid>
@@ -136,44 +138,43 @@ export default function General({skillLists, setSkillLists, courseLists, setCour
             sx={{ mt: 2 }}
           >
             <FormLabel>
-              <b>Skill:</b>
+              <b>SKILLS:</b>
             </FormLabel>
-            <Grid container spacing={3}>
+            <Grid item xs={12}>
               {skillLists.map((x, i) => {
                 return (
-                  <Grid item xs={12} key={i}>
-                    <TextField
-                      id={`titleSkill${i}`}
-                      name="titleSkill"
-                      label="Skill"
-                      type="text"
-                      fullWidth
-                      autoComplete="on"
-                      variant="standard"
-                      value={x.titleSkill}
-                      onChange={(e) => handleSkillChange(e, i)}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            {skillLists.length !== 1 && (
-                              <IconButton onClick={() => handleRemoveSkill(i)}>
-                                <Remove color="error" />
-                              </IconButton>
-                            )}
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
+                  <TextField
+                    key={i}
+                    id={`titleSkill${i}`}
+                    name="titleSkill"
+                    label="Skill"
+                    type="text"
+                    fullWidth
+                    autoComplete="on"
+                    variant="standard"
+                    value={x.titleSkill}
+                    onChange={(e) => handleSkillChange(e, i)}
+                    disabled={inputLoading}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
 
-                    {skillLists.length - 1 === i &&
-                      skillLists.length + 1 <= 6 && (
-                        <IconButton onClick={handleAddSkill}>
-                          <Add color="success" />
-                        </IconButton>
-                      )}
-                  </Grid>
+                          <IconButton onClick={() => handleRemoveSkill(i)}>
+                            <Remove color="error" />
+                          </IconButton>
+
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
                 );
               })}
+              {
+                skillLists.length + 1 <= 6 && (
+                  <IconButton onClick={handleAddSkill}>
+                    <Add color="success" />
+                  </IconButton>
+                )}
             </Grid>
           </FormControl>
         </Grid>

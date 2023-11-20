@@ -1,13 +1,38 @@
 import { useState } from "react";
-import { Box, TextField, Typography, Link, Button, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
+import { Box, TextField, Typography, Link, Button, Alert } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 
-function SignUpForm({ mobile, handleOnClick, auth, useAuthState, type }) {
+function SignUpForm({ mobile, handleOnClick, auth, type }) {
   const navigate = useNavigate()
+
+  const docData = {
+    // Personal
+    firstName: JSON.parse(localStorage.getItem("firstName")) || "", 
+    lastName: JSON.parse(localStorage.getItem("lastName")), 
+    email: JSON.parse(localStorage.getItem("email")), 
+    phone: JSON.parse(localStorage.getItem("phone")), 
+    aboutMe: JSON.parse(localStorage.getItem("aboutMe")), 
+    urlLists: JSON.parse(localStorage.getItem("url" || null)),
+
+    // Academic
+    academicDegree: JSON.parse(localStorage.getItem("academicDegree")),
+    collage: JSON.parse(localStorage.getItem("collage")),
+    specialist: JSON.parse(localStorage.getItem("specialist")),
+    degreeNo: JSON.parse(localStorage.getItem("degreeNo")),
+    degreeNoSelect: JSON.parse(localStorage.getItem("degreeNoSelect")),
+    educationDate: JSON.parse(localStorage.getItem("eduDate")),
+    experLists: JSON.parse(localStorage.getItem("exper" || null)),
+
+    // General
+    skillLists: JSON.parse(localStorage.getItem("skillLists" || null)),
+    courseLists: JSON.parse(localStorage.getItem("courseLists" || null)),
+  };
 
   const [state, setState] = useState({
     name: "",
@@ -31,6 +56,7 @@ function SignUpForm({ mobile, handleOnClick, auth, useAuthState, type }) {
     const { name, email, password } = state;
 
     createUserWithEmailAndPassword(auth, email, password).then(async (userCredential) => {
+      // Add DisplayName
       updateProfile(auth.currentUser, {
         displayName: name,
       })
@@ -39,6 +65,7 @@ function SignUpForm({ mobile, handleOnClick, auth, useAuthState, type }) {
           setErrorMsg(error.code);
         });
 
+      // reset input
       const user = userCredential.user;
       for (const key in state) {
         setState({
@@ -49,12 +76,19 @@ function SignUpForm({ mobile, handleOnClick, auth, useAuthState, type }) {
 
       // Add user to Database
       const userId = user ? `${user.uid}` : "anonymous"
+      const numId = new Date().getTime();
+
       const userRef = doc(db, "Users", userId);
       await setDoc(userRef, {
+        Name: name,
         Email: user.email,
         CreateDate: new Date(user.metadata.creationTime)
       })
 
+      const userDataRef = doc(db, `Users/${userId}/Resume info/${numId}`);
+      await setDoc(userDataRef, { numId, ...docData })
+
+      // more
       navigate("/main")
       setIsSubmit(false)
     }).catch((error) => {
@@ -79,7 +113,6 @@ function SignUpForm({ mobile, handleOnClick, auth, useAuthState, type }) {
         case "auth/too-many-requests":
           errorCode = "too many requests, please try again later.";
           break;
-
         default:
           errorCode = "Error";
           break;
@@ -112,7 +145,13 @@ function SignUpForm({ mobile, handleOnClick, auth, useAuthState, type }) {
           </Typography>
         </Box>
 
-        <Button disabled={isSubmit || type === "signIn"} type="submit" variant="contained">Sign Up</Button>
+        
+        {!isSubmit ?
+          <Button disabled={isSubmit || type === "signIn"} type="submit" variant="contained">Sign Up</Button>
+          :
+          <LoadingButton loading variant="contained">
+            Submit
+          </LoadingButton>}
       </Box>
     </Box>
   );

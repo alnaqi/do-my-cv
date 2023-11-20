@@ -1,13 +1,14 @@
-import { Box, TextField, Typography, Link, Button, Alert } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { Box, TextField, Typography, Link, Button, Alert } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
+
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-function SignInForm({ mobile, handleOnClick, auth, useAuthState, type }) {
+function SignInForm({ mobile, handleOnClick, auth, type }) {
   const navigate = useNavigate()
 
-  const [user, loading] = useAuthState(auth)
   const [state, setState] = useState({
     email: "",
     password: ""
@@ -38,8 +39,6 @@ function SignInForm({ mobile, handleOnClick, auth, useAuthState, type }) {
       navigate("/main")
       setIsSubmit(false)
     }).catch((error) => {
-      // const errorCode = error.code;
-      // const errorMessage = error.message;
       let errorCode = error.code;
 
       switch (errorCode) {
@@ -71,6 +70,7 @@ function SignInForm({ mobile, handleOnClick, auth, useAuthState, type }) {
     })
   };
 
+
   return (
     <Box className="form-container sign-in-container">
       <Box
@@ -88,16 +88,21 @@ function SignInForm({ mobile, handleOnClick, auth, useAuthState, type }) {
         <TextField disabled={type === "signUp"} required fullWidth size="small" label="Password" type="password" name="password" variant="filled" value={state.password} onChange={handleChange} />
 
         <Box className="linkes">
-          <Typography className="a-auth" variant="body2" color="text.secondary" align="center">
+          {/* <Typography className="a-auth" variant="body2" color="text.secondary" align="center">
             <Link disabled={type === "signUp"} type="button" component="button" color="inherit">Forgot your password?</Link>
-          </Typography>
+          </Typography> */}
 
           <Typography className="a-auth" variant="body2" color="text.secondary" align="center">
             {mobile && <Link type="button" component="button" color="inherit" onClick={() => handleOnClick("signUp")}>You do not have account?</Link>}
           </Typography>
         </Box>
 
-        <Button disabled={isSubmit || (type === "signUp")} type="submit" variant="contained">Sign In</Button>
+        {!isSubmit ?
+          <Button disabled={isSubmit || (type === "signUp")} type="submit" variant="contained">Sign In</Button>
+          :
+          <LoadingButton loading variant="contained">
+            Submit
+          </LoadingButton>}
       </Box>
     </Box>
   );

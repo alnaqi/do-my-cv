@@ -10,28 +10,75 @@ import {
   Box,
   Tooltip,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import ListItemsAppbarAvatar from './ListItemsAppbarAvatar';
 
 import { useAuthState } from "react-firebase-hooks/auth"
 import { signOut } from 'firebase/auth';
 import { auth } from "../../firebase/config"
+import useLocalStorage from 'hooks/useLocalStorage';
 
 const MUIAppbar = ({ drawerWidth, showDrawer }) => {
   const [user, loading, error] = useAuthState(auth)
   const theme = useTheme();
 
+  const [firstName, setFirstName] = useLocalStorage("firstName", "");
+  const [lastName, setLastName] = useLocalStorage("lastName", "");
+  const [email, setEmail] = useLocalStorage("email", "");
+  const [phone, setPhone] = useLocalStorage("phone", "");
+  const [aboutMe, setAboutMe] = useLocalStorage("aboutMe", "");
+  const [urlLists, setUrlLists] = useLocalStorage("url", [{ url: "" }]);
+
+  // Acadmic
+  const [academicDegree, setAcademicDegree] = useLocalStorage("academicDegree", "");
+  const [collage, setCollage] = useLocalStorage("collage", "");
+  const [specialist, setSpecialist] = useLocalStorage("specialist", "");
+  const [degreeNo, setDegreeNo] = useLocalStorage("degreeNo", "");
+  const [degreeNoSelect, setDegreeNoSelect] = useLocalStorage("degreeNoSelect", "");
+  const [educationDate, setEducationDate] = useLocalStorage("eduDate", "");
+  const [experLists, setExperLists] = useLocalStorage("exper", [
+    { titleExper: "", company: "", descExper: "", startDate: "", endDate: "", checkedEndDate: true },
+  ]);
+
+  // General
+  const [skillLists, setSkillLists] = useLocalStorage("skillLists", [{ titleSkill: "" }]);
+  const [courseLists, setCourseLists] = useLocalStorage("courseLists", [
+    { titleCourse: "", courseDate: "" },
+  ]);
+
   const settingsLogout = [
     {
       text: "Profile",
-      navigate: "/main/Contact",
+      navigate: "/main/profile",
     },
     {
       text: "Logout",
       navigate: "/main/registration",
       handleAuth: () => {
         signOut(auth).then(() => {
-          console.log("Sign out seccssfully !")
+          setFirstName("")
+          setLastName("")
+          setEmail("")
+          setPhone("")
+          setAboutMe("")
+          setUrlLists([{ url: "" }])
+
+          // academic
+          setAcademicDegree("")
+          setCollage("")
+          setSpecialist("")
+          setDegreeNo("")
+          setDegreeNoSelect("")
+          setEducationDate("")
+          setExperLists([
+            { titleExper: "", company: "", descExper: "", startDate: "", endDate: "", checkedEndDate: true },
+          ])
+
+          // General
+          setSkillLists([{ titleSkill: "" }])
+          setCourseLists([
+            { titleCourse: "", courseDate: "" },
+          ])
         }).catch((error) => {
 
         })
@@ -49,7 +96,7 @@ const MUIAppbar = ({ drawerWidth, showDrawer }) => {
     },
   ];
 
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -80,32 +127,14 @@ const MUIAppbar = ({ drawerWidth, showDrawer }) => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography sx={{ flexGrow: 1 }}
-        >{user && (user.displayName !== null ? user.displayName : user.email)}</Typography>
-        {/* <Link
-          style={{
-            textDecoration: "none",
-            color: "inherit"
-          }}
-          to="/main"
-        >
-          <Typography variant="body1" color="inherit">
-            Guts
-          </Typography>
-        </Link>
-        <Link
-          style={{
-            textDecoration: "none",
-          }}
-          to="/main"
-        >
-          <Avatar alt="Turki Alnaqi" src={logo} />
-        </Link> */}
-        {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" /> */}
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          {user && (user.displayName !== null ? `Hello, ${user.displayName}` : user.email)}
+        </Typography>
+
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="User settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <Avatar alt={user && (user.displayName !== null ? user.displayName : "")} src="/static/images/avatar/2.jpg" />
             </IconButton>
           </Tooltip>
           <Menu

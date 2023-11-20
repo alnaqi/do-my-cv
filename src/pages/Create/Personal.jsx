@@ -12,7 +12,9 @@ import {
   InputAdornment,
   Modal,
 } from "@mui/material";
-import { Add, Help, Remove } from "@mui/icons-material";
+// import { MuiFileInput } from 'mui-file-input'          FFFFIIIILLLLEEEE
+import { Add, ContentCopy, Help, Remove } from "@mui/icons-material";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 const style = {
   position: "absolute",
   top: "50%",
@@ -25,11 +27,22 @@ const style = {
   p: 4,
 };
 
-export default function Personal({firstName, lastName, email, phone, aboutMe, urlLists, setFirstName, setLastName, setEmail, setPhone, setAboutMe, setUrlLists}) {
+export default function Personal({ inputLoading, firstName, lastName, email, phone, aboutMe, urlLists, setFirstName, setLastName, setEmail, setPhone, setAboutMe, setUrlLists }) {
+
+  const textAboutMe = `Seeking a challenging career opportunity to fully utilize my training and skills, while making a significant contribution to the success of the organization`
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [isClipboard, setIsClipboard] = useState(false)
+  const handleClipboard = () => {
+    setIsClipboard(true)
+    navigator.clipboard.writeText(textAboutMe)
+    setTimeout(() => {
+      setIsClipboard(false)
+    }, 1500);
+  }
 
   // handle input change
   const handleInputChange = (e, index) => {
@@ -51,6 +64,13 @@ export default function Personal({firstName, lastName, email, phone, aboutMe, ur
     setUrlLists([...urlLists, { url: "" }]);
   };
 
+  // const [file, setFile] = React.useState(null) FFFFFIIIILLLLLEEEEEE
+
+  // const handleChange = (newFile) => {
+  //   setFile(newFile)                           FFFFFIIIILLLLLEEEEEE
+  //   console.log(file)
+  // }
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -67,6 +87,7 @@ export default function Personal({firstName, lastName, email, phone, aboutMe, ur
             value={firstName}
             onChange={e => setFirstName(e.target.value)}
             fullWidth
+            disabled={inputLoading}
             autoComplete="given-name"
             variant="standard"
           />
@@ -81,6 +102,7 @@ export default function Personal({firstName, lastName, email, phone, aboutMe, ur
             value={lastName}
             onChange={e => setLastName(e.target.value)}
             fullWidth
+            disabled={inputLoading}
             autoComplete="family-name"
             variant="standard"
           />
@@ -95,6 +117,7 @@ export default function Personal({firstName, lastName, email, phone, aboutMe, ur
             value={email}
             onChange={e => setEmail(e.target.value)}
             fullWidth
+            disabled={inputLoading}
             autoComplete="email"
             variant="standard"
           />
@@ -109,10 +132,19 @@ export default function Personal({firstName, lastName, email, phone, aboutMe, ur
             value={phone}
             onChange={e => setPhone(e.target.value)}
             fullWidth
+            disabled={inputLoading}
             autoComplete="tel"
             variant="standard"
           />
         </Grid>
+        {/* <Grid item xs={12} sm={6}>
+          <MuiFileInput value={file} onChange={handleChange} />
+        </Grid>                                                   FFFFFIIIILLLLLEEEEEE
+        <Grid item xs={12} sm={6}>
+          <Typography variant="subtitle2">Add Photo</Typography>
+        </Grid> */}
+
+
         <Grid item xs={12}>
           <FormControl required fullWidth>
             <Box
@@ -127,7 +159,7 @@ export default function Personal({firstName, lastName, email, phone, aboutMe, ur
                 <Help fontSize="small" />
               </IconButton>
             </Box>
-            <CKEditor {...{aboutMe, setAboutMe}} />
+            <CKEditor {...{ aboutMe, setAboutMe, inputLoading }} />
           </FormControl>
           <Modal
             open={open}
@@ -136,51 +168,77 @@ export default function Personal({firstName, lastName, email, phone, aboutMe, ur
             aria-describedby="modal-modal-description"
           >
             <Box sx={style}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Example
-              </Typography>
+              <Box
+                sx={{ display: 'flex' }}
+              >
+                <Typography sx={{ width: '100%' }} id="modal-modal-title" variant="h6" component="h2">
+                  Example
+                </Typography>
+                {isClipboard ?
+                  <IconButton disabled={true} sx={{ flexShrink: 0 }}>
+                    <TaskAltIcon color="success" />
+                  </IconButton>
+                  :
+                  <IconButton sx={{ flexShrink: 0 }} onClick={handleClipboard} >
+                    <ContentCopy />
+                  </IconButton>
+                }
+
+              </Box>
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Seeking a challenging career opportunity to fully utilize my
-                training and skills, while making a significant contribution to
-                the success of the organization
+                {textAboutMe}
               </Typography>
+
             </Box>
           </Modal>
         </Grid>
-        {urlLists.map((x, i) => {
-          return (
-            <Grid item xs={12} key={i}>
-              <TextField
-                id={`url${i}`}
-                name="url"
-                label="Link"
-                type="url"
-                fullWidth
-                autoComplete="on"
-                variant="standard"
-                value={x.url}
-                onChange={(e) => handleInputChange(e, i)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      {urlLists.length !== 1 && (
-                        <IconButton onClick={() => handleRemoveClick(i)}>
-                          <Remove color="error" />
-                        </IconButton>
-                      )}
-                    </InputAdornment>
-                  ),
-                }}
-              />
 
-              {urlLists.length - 1 === i && urlLists.length + 1 <= 4 && (
-                <IconButton onClick={handleAddClick}>
+        <Grid item xs={12} >
+          <FormControl
+            fullWidth
+            sx={{ mt: 2 }}
+          >
+            <FormLabel>
+              <b>LINKS:</b>
+            </FormLabel>
+            <Grid item xs={12}>
+              {urlLists.map((x, i) => {
+                return (
+                  <TextField
+                    key={i}
+                    id={`url${i}`}
+                    name="url"
+                    label="Link"
+                    type="url"
+                    fullWidth
+                    autoComplete="on"
+                    variant="standard"
+                    value={x.url}
+                    onChange={(e) => handleInputChange(e, i)}
+                    disabled={inputLoading}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          {(
+                            <IconButton onClick={() => handleRemoveClick(i)}>
+                              <Remove color="error" />
+                            </IconButton>
+                          )}
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                );
+              })}
+              {urlLists.length + 1 <= 4 && (
+                <IconButton onClick={handleAddClick} disabled={inputLoading}>
                   <Add color="success" />
                 </IconButton>
               )}
             </Grid>
-          );
-        })}
+          </FormControl>
+
+        </Grid>
       </Grid>
     </React.Fragment>
   );

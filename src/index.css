@@ -42,7 +42,7 @@ input::-webkit-inner-spin-button {
   min-height: 297mm;
   padding: 20mm 10mm ;
   margin: 10mm auto;
-  border: 1px #D3D3D3 solid;
+  /* border: 1px #D3D3D3 solid; */
   border-radius: 5px;
   background: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -50,7 +50,7 @@ input::-webkit-inner-spin-button {
 }
 
 .cv-container {
-  height: 257mm;
+  min-height: 257mm;
 }
 
 @page {
@@ -81,7 +81,7 @@ input::-webkit-inner-spin-button {
     background: initial;
     page-break-after: always;
     width: 210mm !important;
-    min-height: 292mm !important;
+    height: 292mm !important;
   }
 
   .cv-container {
